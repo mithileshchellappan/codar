@@ -1,5 +1,5 @@
 import styles from "./Home.module.css";
-import { Textarea, TextInput,Button } from "@mantine/core";
+import {  TextInput,Button } from "@mantine/core";
 import React from "react";
 import Editor from "@monaco-editor/react";
 import cmprs from 'lzutf8'
