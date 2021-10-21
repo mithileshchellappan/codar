@@ -18,6 +18,8 @@ const Home = () => {
     }
   ];
 
+  baseUrl = baseUrl || process.env.BASE_URL
+
   const [files, setFiles] = React.useState(emptyFile);
   const [currFile, setCurrFile] = React.useState(files[0]);
   const [tempName, setTempName] = React.useState(currFile.name);
