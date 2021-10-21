@@ -5,7 +5,6 @@ import Editor from "@monaco-editor/react";
 import cmprs from 'lzutf8'
 import {useClipboard} from '@mantine/hooks'
 import {useNotifications} from '@mantine/notifications'
-import {baseUrl} from './config.json'
 const Home = () => {
   const [data, setData] = React.useState(false);
   const [toggle, setToggle] = React.useState(true);
@@ -18,7 +17,7 @@ const Home = () => {
     }
   ];
 
-  baseUrl = baseUrl || process.env.BASE_URL
+  const baseUrl =  process.env.BASE_URL
 
   const [files, setFiles] = React.useState(emptyFile);
   const [currFile, setCurrFile] = React.useState(files[0]);
