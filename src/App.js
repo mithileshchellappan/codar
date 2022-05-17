@@ -151,10 +151,12 @@ const Home = () => {
     var jsonStringified = JSON.stringify(shareArr)
     let url = `${baseUrl}/?code=${jsonStringified}`
     // clipboard.copy(url)
-    navigator.clipboard.writeText(url)
-    notifications.showNotification({
-      title:`Copied to clipboard`,
-      message:`Share URL is copied to clipboard`
+    navigator.clipboard.writeText(url).then(()=>{
+
+      notifications.showNotification({
+        title:`Copied to clipboard`,
+        message:`Share URL is copied to clipboard`
+      })
     })
   }
 
