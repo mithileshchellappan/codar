@@ -1,15 +1,15 @@
 import styles from "./Home.module.css";
-import {  TextInput,Button } from "@mantine/core";
+import { TextInput, Button } from "@mantine/core";
 import React from "react";
 import Editor from "@monaco-editor/react";
-import cmprs from 'lzutf8'
-import {useClipboard} from '@mantine/hooks'
-import {useNotifications} from '@mantine/notifications'
+import cmprs from "lzutf8";
+import { useClipboard } from "@mantine/hooks";
+import { useNotifications } from "@mantine/notifications";
 const Home = () => {
   const [data, setData] = React.useState(false);
   const [toggle, setToggle] = React.useState(true);
   const notifications = useNotifications();
-  const clipboard = useClipboard({timeout:3000})
+  const clipboard = useClipboard({ timeout: 3000 });
   const emptyFile = [
     {
       name: "start.js",
@@ -17,7 +17,8 @@ const Home = () => {
     }
   ];
 
-  const baseUrl =  process.env.APPLICATION_URL || "http://codar.notagodzilla.wtf"
+  const baseUrl =
+    process.env.APPLICATION_URL || "http://codar.notagodzilla.wtf";
 
   const [files, setFiles] = React.useState(emptyFile);
   const [currFile, setCurrFile] = React.useState(files[0]);
@@ -35,7 +36,9 @@ const Home = () => {
       var newFiles = [];
       for (var dat in parseData) {
         console.log(dat);
-        var content = cmprs.decompress(parseData[dat].value,{inputEncoding:'Base64'})
+        var content = cmprs.decompress(parseData[dat].value, {
+          inputEncoding: "Base64"
+        });
         newFiles.push({
           name: parseData[dat].name,
           value: content
@@ -123,33 +126,35 @@ const Home = () => {
     setFiles(files);
     console.log(files);
     setCurrFile(files[files.length - 1]);
-    setToggle(false)
+    setToggle(false);
   }
 
-  function handleEditorFileChange(value){
-    var tempCurrFile = {name:currFile.name,value}
-    setCurrFile(tempCurrFile)
-    var fileIndex = files.findIndex((obj=>obj.name===tempCurrFile.name))
+  function handleEditorFileChange(value) {
+    var tempCurrFile = { name: currFile.name, value };
+    setCurrFile(tempCurrFile);
+    var fileIndex = files.findIndex((obj) => obj.name === tempCurrFile.name);
 
-    files[fileIndex]=tempCurrFile
-    setFiles(files)
-    console.log(files)
+    files[fileIndex] = tempCurrFile;
+    setFiles(files);
+    console.log(files);
   }
 
-  async function getShareLink(){
-    var shareArr = []
-
-    for(var file in files){
-      var compressedValue = cmprs.compress(files[file].value,{outputEncoding:'Base64'})
-      var newObj={
-        name:files[file].name,
-        value:compressedValue
-      }
-      shareArr.push(newObj)
+  async function getShareLink(event) {
+    var shareArr = [];
+    event.preventDefault();
+    for (var file in files) {
+      var compressedValue = cmprs.compress(files[file].value, {
+        outputEncoding: "Base64"
+      });
+      var newObj = {
+        name: files[file].name,
+        value: compressedValue
+      };
+      shareArr.push(newObj);
     }
 
-    var jsonStringified = JSON.stringify(shareArr)
-    let url = `${baseUrl}/?code=${jsonStringified}`
+    var jsonStringified = JSON.stringify(shareArr);
+    let url = `${baseUrl}/?code=${jsonStringified}`;
     // clipboard.copy(url)
     // navigator.clipboard.writeText(url).then(()=>{
 
@@ -158,19 +163,19 @@ const Home = () => {
     //     message:`Share URL is copied to clipboard`
     //   })
     // })
-    if ('clipboard' in navigator) {
-      return await navigator.clipboard.writeText(url).then(()=>{
+    if ("clipboard" in navigator) {
+      await navigator.clipboard.writeText(url).then(() => {
         notifications.showNotification({
-          title:`Copied to clipboard`,
-          message:`Share URL is copied to clipboard`
-        })
+          title: `Copied to clipboard`,
+          message: `Share URL is copied to clipboard`
+        });
       });
     } else {
-      return document.execCommand('copy', true, url).then(()=>{
+      return document.execCommand("copy", true, url).then(() => {
         notifications.showNotification({
-          title:`Copied to clipboard`,
-          message:`Share URL is copied to clipboard`
-        })
+          title: `Copied to clipboard`,
+          message: `Share URL is copied to clipboard`
+        });
       });
     }
   }
@@ -197,7 +202,7 @@ const Home = () => {
           path={files[0] === emptyFile ? "start.js" : currFile.name}
         />
       </div>
-        {!data && <Button onClick={getShareLink}>Share</Button>}
+      {!data && <Button onClick={getShareLink}>Share</Button>}
 
       <footer className={styles.footer}>Made by notagodzilla 🤖 </footer>
     </div>
