@@ -136,7 +136,7 @@ const Home = () => {
     console.log(files)
   }
 
-  function getShareLink(){
+  async function getShareLink(){
     var shareArr = []
 
     for(var file in files){
@@ -151,13 +151,18 @@ const Home = () => {
     var jsonStringified = JSON.stringify(shareArr)
     let url = `${baseUrl}/?code=${jsonStringified}`
     // clipboard.copy(url)
-    navigator.clipboard.writeText(url).then(()=>{
+    // navigator.clipboard.writeText(url).then(()=>{
 
-      notifications.showNotification({
-        title:`Copied to clipboard`,
-        message:`Share URL is copied to clipboard`
-      })
-    })
+    //   notifications.showNotification({
+    //     title:`Copied to clipboard`,
+    //     message:`Share URL is copied to clipboard`
+    //   })
+    // })
+    if ('clipboard' in navigator) {
+      return await navigator.clipboard.writeText(url);
+    } else {
+      return document.execCommand('copy', true, url);
+    }
   }
 
   return (
