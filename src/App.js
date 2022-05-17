@@ -159,9 +159,19 @@ const Home = () => {
     //   })
     // })
     if ('clipboard' in navigator) {
-      return await navigator.clipboard.writeText(url);
+      return await navigator.clipboard.writeText(url).then(()=>{
+        notifications.showNotification({
+          title:`Copied to clipboard`,
+          message:`Share URL is copied to clipboard`
+        })
+      });
     } else {
-      return document.execCommand('copy', true, url);
+      return document.execCommand('copy', true, url).then(()=>{
+        notifications.showNotification({
+          title:`Copied to clipboard`,
+          message:`Share URL is copied to clipboard`
+        })
+      });
     }
   }
 
